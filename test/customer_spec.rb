@@ -27,5 +27,9 @@ RSpec.describe Customer do
     expect(@c.last_name).to eq("Clarke")
   end
 
+  it 'has a created time' do
+    expect(@c.created_at). to be_a(Time)
+  end
+
 
 end
