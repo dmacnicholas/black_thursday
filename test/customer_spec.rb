@@ -19,5 +19,9 @@ RSpec.describe Customer do
     expect(@c.id).to eq(6)
   end
 
+  it 'has a first name' do
+    expect(@c.first_name).to eq("Joan")
+  end
+
 
 end
