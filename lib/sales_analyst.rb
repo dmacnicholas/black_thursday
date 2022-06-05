@@ -1,11 +1,16 @@
-class SalesAnalyst
-  attr_reader :item_repository, :merchant_repository, :invoice_repository, :transaction_repository
+require_relative './enumerable'
 
-  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo)
+class SalesAnalyst
+  include Enumerable
+  attr_reader :item_repository, :merchant_repository, :invoice_repository,
+  :transaction_repository, :invoice_item_repository
+
+  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
     @transaction_repository = transaction_repo
+    @invoice_item_repository = invoice_item_repo
   end
 
   def average_items_per_merchant
@@ -151,5 +156,13 @@ class SalesAnalyst
         transaction.result == :success
       end
     end
+  end
+
+  def invoice_total(id)
+    transactions = @invoice_item_repository.find_all_by_invoice_id(id)
+    amounts = transactions.map do |transaction|
+      transaction.quantity * transaction.unit_price
+    end
+    amounts.sum.to_f
   end
 end
