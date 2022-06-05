@@ -1,10 +1,11 @@
 class SalesAnalyst
-  attr_reader :item_repository, :merchant_repository, :invoice_repository
+  attr_reader :item_repository, :merchant_repository, :invoice_repository, :transaction_repository
 
-  def initialize(item_repo, merchant_repo, invoice_repo)
+  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
+    @transaction_repository = transaction_repo
   end
 
   def average_items_per_merchant
@@ -141,4 +142,14 @@ class SalesAnalyst
     ((@invoice_repository.find_all_by_status(status).count / @invoice_repository.all.count.to_f) * 100).round(2)
   end
 
+  def invoice_paid_in_full?(id)
+    transactions = @transaction_repository.find_all_by_invoice_id(id)
+    if transactions == []
+      return false
+    else
+      transactions.all? do |transaction|
+        transaction.result == :success
+      end
+    end
+  end
 end

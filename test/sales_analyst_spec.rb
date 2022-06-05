@@ -4,9 +4,10 @@ RSpec.describe SalesAnalyst do
   before :each do
     sales_engine = SalesEngine.from_csv({
       :items => "./data/items.csv",
-       :merchants => "./data/merchants.csv",
-       :invoice => "./data/invoices.csv",
-       :invoice_items => "./data/invoice_items.csv"
+      :merchants => "./data/merchants.csv",
+      :invoice => "./data/invoices.csv",
+      :invoice_items => "./data/invoice_items.csv",
+      :transactions => "./data/transactions.csv"
     })
     @sales_analyst = sales_engine.analyst
   end
@@ -80,6 +81,13 @@ RSpec.describe SalesAnalyst do
     expect(@sales_analyst.invoice_status(:pending)).to eq(29.55)
     expect(@sales_analyst.invoice_status(:shipped)).to eq(56.95)
     expect(@sales_analyst.invoice_status(:returned)).to eq(13.5)
+  end
+
+  it 'checks if the Invoice is paid in full' do
+    expect(@sales_analyst.invoice_paid_in_full?(1)).to eq(true)
+    expect(@sales_analyst.invoice_paid_in_full?(200)).to eq(true)
+    expect(@sales_analyst.invoice_paid_in_full?(203)).to eq(false)
+    expect(@sales_analyst.invoice_paid_in_full?(204)).to eq(false)
   end
 
 end
