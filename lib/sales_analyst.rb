@@ -226,6 +226,7 @@ class SalesAnalyst
         @merch_ids << total[0]
       end
     end
+    @merch_ids
   end
 
   def top_performing_merchants_array
