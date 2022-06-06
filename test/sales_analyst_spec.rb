@@ -111,9 +111,14 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.merchant_ids[0]).to eq(12334105)
   # end
 
-  it 'returns the number of items per merchant' do
-    @sales_analyst.merchant_ids
-    expect(@sales_analyst.items_count_list.class).to eq(Array)
-    expect(@sales_analyst.items_count_list[0]).to eq(3)
+  # it 'returns the number of items per merchant' do
+  #   @sales_analyst.merchant_ids
+  #   expect(@sales_analyst.items_count_list.class).to eq(Array)
+  #   expect(@sales_analyst.items_count_list[0]).to eq(3)
+  # end
+
+  it 'returns an array of the days of the week the item was sold on' do
+    expect(@sales_analyst.day_of_week.class).to eq(Array)
+    expect(@sales_analyst.day_of_week.first).to eq(6)
   end
 end
