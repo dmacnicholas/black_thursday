@@ -99,10 +99,21 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.total_revenue_by_date(Time.parse("2015-08-28"))).to eq(272.70)
   # end
 
-  it 'returns the top performing merchants in terms of revenue' do
-    expect(@sales_analyst.top_revenue_earners.length).to eq(20)
-    expect(@sales_analyst.top_revenue_earners[0].class).to eq(Merchant)
-    expect(@sales_analyst.top_revenue_earners(5).length).to eq(5)
-    expect(@sales_analyst.top_revenue_earners(5)[3].id).to eq(12334634)
+  # it 'returns the top performing merchants in terms of revenue' do
+  #   expect(@sales_analyst.top_revenue_earners.length).to eq(20)
+  #   expect(@sales_analyst.top_revenue_earners[0].class).to eq(Merchant)
+  #   expect(@sales_analyst.top_revenue_earners(5).length).to eq(5)
+  #   expect(@sales_analyst.top_revenue_earners(5)[3].id).to eq(12334634)
+  # end
+
+  # it 'returns an array of merchant ids' do
+  #   expect(@sales_analyst.merchant_ids.class).to eq(Array)
+  #   expect(@sales_analyst.merchant_ids[0]).to eq(12334105)
+  # end
+
+  it 'returns the number of items per merchant' do
+    @sales_analyst.merchant_ids
+    expect(@sales_analyst.items_count_list.class).to eq(Array)
+    expect(@sales_analyst.items_count_list[0]).to eq(3)
   end
 end

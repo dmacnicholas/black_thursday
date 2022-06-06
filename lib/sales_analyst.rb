@@ -181,24 +181,11 @@ class SalesAnalyst
     merchant_invoice_totals_sorted
     top_performing_merchant_ids(number)
     top_performing_merchants_array
-    # @merch_ids = []
-    # @sorted_totals.each do |total|
-    #   if @sorted_totals.index(total) < number
-    #     @merch_ids << total[0]
-    #   end
-    # end
-    # answer = @merch_ids.flat_map do |merch_id|
-    #   @merchant_repository.all.find_all {|merch| merch.id == merch_id}
-    # end
-  end
-
-  def merchant_ids
-    @merchants = @merchant_repository.all.map { |merchant| merchant.id }
   end
 
   def merchant_invoice_hash
     @merchant_invoices = {}
-    @merchants.each do |merch|
+    @merch_ids.each do |merch|
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
   end
