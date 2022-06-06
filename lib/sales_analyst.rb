@@ -188,6 +188,7 @@ class SalesAnalyst
     @merch_ids.each do |merch|
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
+    @merchant_invoices
   end
 
   def invoice_item_hash
@@ -197,6 +198,7 @@ class SalesAnalyst
         @ii[merch_id] << @invoice_item_repository.all.find_all { |invoice_item| invoice_item.invoice_id == invoice.id }
       end
     end
+    @ii
   end
 
   def invoice_item_totals

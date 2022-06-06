@@ -117,12 +117,26 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.items_count_list[0]).to eq(3)
   # end
 
-  # xit 'returns an array of the days of the week the item was sold on' do
+  # it 'returns an array of the days of the week the item was sold on' do
   #   expect(@sales_analyst.day_of_week.class).to eq(Array)
   #   expect(@sales_analyst.day_of_week.first).to eq(6)
   # end
 
-  it 'returns the standard deviation of the invoices per day' do
-    expect(@sales_analyst.average_invoices_per_day_standard_deviation).to eq(18.07)
+  # it 'returns the standard deviation of the invoices per day' do
+  #   expect(@sales_analyst.average_invoices_per_day_standard_deviation).to eq(18.07)
+  # end
+
+  # it 'returns a hash of invoices for every merchant' do
+  #   @sales_analyst.merchant_ids
+  #   expect(@sales_analyst.merchant_invoice_hash[12334105][0].merchant_id).to eq(12334105)
+  #   expect(@sales_analyst.merchant_invoice_hash.class).to eq(Hash)
+  # end
+
+  it 'returns a hash of invoice items for each merchant' do
+    @sales_analyst.merchant_ids
+    @sales_analyst.merchant_invoice_hash
+    @sales_analyst.invoice_item_hash
+    expect(@sales_analyst.invoice_item_hash[12334105][0][0].id).to eq(344)
+    expect(@sales_analyst.invoice_item_hash.class).to eq(Hash)
   end
 end
