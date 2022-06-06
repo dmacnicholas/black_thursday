@@ -233,5 +233,6 @@ class SalesAnalyst
     answer = @merch_ids.flat_map do |merch_id|
       @merchant_repository.all.find_all {|merch| merch.id == merch_id}
     end
+    answer
   end
 end
