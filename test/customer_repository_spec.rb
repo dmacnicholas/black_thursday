@@ -30,10 +30,19 @@ RSpec.describe CustomerRepository do
     expected = @customer_repository.find_all_by_last_name(fragment)
     expect(@customer_repository.find_all_by_last_name("On").count).to eq(85)
     expect(@customer_repository.find_all_by_last_name("HH")).to eq([])
-
-
   end
 
+  it 'creates a new Customer instance with the provided attributes ' do
+    attributes = {
+        :first_name => "Joan",
+        :last_name => "Clarke",
+        :created_at => Time.now,
+        :updated_at => Time.now
+      }
+      @customer_repository.create(attributes)
+      expect(@customer_repository.all[-1].first_name).to eq("Joan")
+      expect(@customer_repository.all[-1].id).to eq(1001)
+    end
 
 
 
