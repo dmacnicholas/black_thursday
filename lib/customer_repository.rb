@@ -28,4 +28,13 @@ class CustomerRepository
     end
   end
 
+  def find_all_by_last_name(name)
+    match = []
+    @all.find_all do |row|
+      if row.last_name.upcase.include?(name.upcase) == true
+        match << row
+      end
+    end
+  end
+
 end

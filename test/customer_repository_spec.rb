@@ -25,7 +25,13 @@ RSpec.describe CustomerRepository do
     expect(@customer_repository.find_all_by_first_name("hh")).to eq([])
   end
 
-  xit 'returns either [] or one or more matches which have a last name matching ' do
+  it 'returns either [] or one or more matches which have a last name matching ' do
+    fragment = "On"
+    expected = @customer_repository.find_all_by_last_name(fragment)
+    expect(@customer_repository.find_all_by_last_name("On").count).to eq(85)
+    expect(@customer_repository.find_all_by_last_name("HH")).to eq([])
+
+
   end
 
 
