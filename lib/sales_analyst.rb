@@ -215,12 +215,8 @@ class SalesAnalyst
 
   def merchant_invoice_totals_sorted
     @merchant_totals = Hash.new
-    @totals.each do |merch_id, array|
-      @merchant_totals[merch_id] = array.sum.to_f
-    end
-    @sorted_totals = @merchant_totals.sort_by do |merchant_id, total|
-      -total
-    end
+    @totals.each { |merch_id, array| @merchant_totals[merch_id] = array.sum.to_f }
+    @sorted_totals = @merchant_totals.sort_by { |merchant_id, total| -total }
   end
 
   def top_performing_merchant_ids(number)
