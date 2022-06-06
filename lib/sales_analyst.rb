@@ -165,4 +165,11 @@ class SalesAnalyst
     end
     amounts.sum.to_f
   end
+
+  def total_revenue_by_date(date)
+    invoice_items = @invoice_item_repository.all.find_all { |invoice_item| invoice_item.created_at[0..9] == date.to_s[0..9] }
+    amounts = invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }
+    amounts.sum.to_f 
+  end
 end
