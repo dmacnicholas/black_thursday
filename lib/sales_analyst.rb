@@ -210,6 +210,7 @@ class SalesAnalyst
         end
       end
     end
+    @totals
   end
 
   def merchant_invoice_totals_sorted

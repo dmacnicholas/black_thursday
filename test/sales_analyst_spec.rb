@@ -132,11 +132,19 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.merchant_invoice_hash.class).to eq(Hash)
   # end
 
-  it 'returns a hash of invoice items for each merchant' do
+  # it 'returns a hash of invoice items for each merchant' do
+  #   @sales_analyst.merchant_ids
+  #   @sales_analyst.merchant_invoice_hash
+  #   @sales_analyst.invoice_item_hash
+  #   expect(@sales_analyst.invoice_item_hash[12334105][0][0].id).to eq(344)
+  #   expect(@sales_analyst.invoice_item_hash.class).to eq(Hash)
+  # end
+
+  it 'returns a hash of invoice items for each merchant totaled' do
     @sales_analyst.merchant_ids
     @sales_analyst.merchant_invoice_hash
     @sales_analyst.invoice_item_hash
-    expect(@sales_analyst.invoice_item_hash[12334105][0][0].id).to eq(344)
-    expect(@sales_analyst.invoice_item_hash.class).to eq(Hash)
+    expect(@sales_analyst.invoice_item_totals[12334105][0]).to eq(0.87909e3)
+    expect(@sales_analyst.invoice_item_totals.class).to eq(Hash)
   end
 end
