@@ -170,6 +170,81 @@ class SalesAnalyst
     invoice_items = @invoice_item_repository.all.find_all { |invoice_item| invoice_item.created_at[0..9] == date.to_s[0..9] }
     amounts = invoice_items.map { |ii|
       ii.quantity * ii.unit_price }
-    amounts.sum.to_f 
+    amounts.sum.to_f
+  end
+
+  def top_revenue_earners(number = 20)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_item_hash
+    invoice_item_totals
+    merchant_invoice_totals_sorted
+    top_performing_merchant_ids(number)
+    top_performing_merchants_array
+    # @merch_ids = []
+    # @sorted_totals.each do |total|
+    #   if @sorted_totals.index(total) < number
+    #     @merch_ids << total[0]
+    #   end
+    # end
+    # answer = @merch_ids.flat_map do |merch_id|
+    #   @merchant_repository.all.find_all {|merch| merch.id == merch_id}
+    # end
+  end
+
+  def merchant_ids
+    @merchants = @merchant_repository.all.map { |merchant| merchant.id }
+  end
+
+  def merchant_invoice_hash
+    @merchant_invoices = {}
+    @merchants.each do |merch|
+      @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
+    end
+  end
+
+  def invoice_item_hash
+    @ii = Hash.new {|hash, key| hash[key] = []}
+    @merchant_invoices.each do |merch_id, invoices|
+      invoices.each do |invoice|
+        @ii[merch_id] << @invoice_item_repository.all.find_all { |invoice_item| invoice_item.invoice_id == invoice.id }
+      end
+    end
+  end
+
+  def invoice_item_totals
+    @totals = Hash.new {|hash, key| hash[key] = []}
+    @ii.each do |merch_id, inv_item_collection|
+      inv_item_collection.each do |inv_items|
+        inv_items.each do |inv_item|
+          @totals[merch_id] << inv_item.quantity * inv_item.unit_price
+        end
+      end
+    end
+  end
+
+  def merchant_invoice_totals_sorted
+    @merchant_totals = Hash.new
+    @totals.each do |merch_id, array|
+      @merchant_totals[merch_id] = array.sum.to_f
+    end
+    @sorted_totals = @merchant_totals.sort_by do |merchant_id, total|
+      -total
+    end
+  end
+
+  def top_performing_merchant_ids(number)
+    @merch_ids = []
+    @sorted_totals.each do |total|
+      if @sorted_totals.index(total) < number
+        @merch_ids << total[0]
+      end
+    end
+  end
+
+  def top_performing_merchants_array
+    answer = @merch_ids.flat_map do |merch_id|
+      @merchant_repository.all.find_all {|merch| merch.id == merch_id}
+    end
   end
 end

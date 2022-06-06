@@ -95,7 +95,14 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.invoice_total(1).class).to eq(Float)
   # end
 
-  it 'returns the total revenue for a given date' do
-    expect(@sales_analyst.total_revenue_by_date(Time.parse("2015-08-28"))).to eq(272.70)
+  # it 'returns the total revenue for a given date' do
+  #   expect(@sales_analyst.total_revenue_by_date(Time.parse("2015-08-28"))).to eq(272.70)
+  # end
+
+  it 'returns the top performing merchants in terms of revenue' do
+    expect(@sales_analyst.top_revenue_earners.length).to eq(20)
+    expect(@sales_analyst.top_revenue_earners[0].class).to eq(Merchant)
+    expect(@sales_analyst.top_revenue_earners(5).length).to eq(5)
+    expect(@sales_analyst.top_revenue_earners(5)[3].id).to eq(12334634)
   end
 end
