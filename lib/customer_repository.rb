@@ -45,7 +45,16 @@ class CustomerRepository
                           updated_at: Time.now
                         })
 
-                      end
+  end
+
+  def change(id, key, value)
+    if key == :last_name
+      find_by_id(id).last_name = value
+    else key == :first_name
+      find_by_id(id).first_name = value
+    end
+    find_by_id(id).updated_at = Time.now
+  end
 
 
 end
