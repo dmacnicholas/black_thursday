@@ -184,4 +184,10 @@ RSpec.describe SalesAnalyst do
     expect(@sales_analyst.merchants_with_pending_invoices[0].class).to eq(Merchant)
     expect(@sales_analyst.merchants_with_pending_invoices.count).to eq(448)
   end
+
+  it 'returns which merchants offer only one item' do
+    expect(@sales_analyst.merchants_with_only_one_item.class).to eq(Array)
+    expect(@sales_analyst.merchants_with_only_one_item[0].class).to eq(Merchant)
+    expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
+  end
 end

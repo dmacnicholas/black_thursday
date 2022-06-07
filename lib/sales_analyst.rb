@@ -239,15 +239,14 @@ class SalesAnalyst
   def merchants_with_pending_invoices
     merchants = []
     merchant_ids
-    merchant_invoice_hash.each do |merch_id, invoices|
-      invoices.each do |invoice|
-        if invoice.status == :pending
-          merchants << merch_id
-        end
-      end
+    merchant_invoice_hash.each { |merch_id, invoices| invoices.each { |invoice| invoice.status == :pending ? merchants << merch_id : nil }}
+    pending_merchants = merchants.uniq.flat_map { |merchant| @merchant_repository.all.find_all {|merch| merch.id == merchant }}
+  end
+
+  def merchants_with_only_one_item
+    merchant_ids_with_one_item = merchant_ids.find_all do |id|
+      @item_repository.find_all_by_merchant_id(id).count == 1
     end
-    pending_merchants = merchants.uniq.flat_map do |merchant|
-      @merchant_repository.all.find_all {|merch| merch.id == merchant}
-    end
+    merchants_with_one_item = merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
   end
 end
