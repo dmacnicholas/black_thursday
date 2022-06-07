@@ -16,4 +16,6 @@ require './lib/invoice_item_repository'
 require 'date'
 require './lib/transaction'
 require './lib/transaction_repository'
+require './lib/customer'
+require './lib/customer_repository'
 
