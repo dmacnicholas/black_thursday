@@ -1,4 +1,4 @@
-module Enumerable
+module Enumerable #rename to Crudable
 
   def find_by_id(id)
     @all.find {|row| row.id == id}

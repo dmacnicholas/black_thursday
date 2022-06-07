@@ -47,7 +47,7 @@ RSpec.describe InvoiceRepository do
     expect(@invoice_repository.find_by_id(4986).merchant_id).to eq(8)
   end
 
-  it 'can update invoice status' do
+  it 'can update invoice status and does not change other attributes ' do
     attributes = {
                   :customer_id => 7,
                   :merchant_id => 8,
@@ -60,8 +60,21 @@ RSpec.describe InvoiceRepository do
     expect(@invoice_repository.find_by_id(4986)).to be_a(Invoice)
     @invoice_repository.update(4986, {status: "success"})
     expect(@invoice_repository.find_by_id(4986).status).to eq(:success)
-
     expect(@invoice_repository.find_by_id(4986).updated_at).to be > invoice_updated_at
+    expect(@invoice_repository.find_by_id(4986).customer_id).to eq(7)
+    expect(@invoice_repository.find_by_id(4986).merchant_id).to eq(8)
   end
 
+  it 'can delete the invoice with the corresponding ID' do
+    attributes = {
+                  :customer_id => 7,
+                  :merchant_id => 8,
+                  :status      => "pending",
+                  :created_at  => Time.now ,
+                  :updated_at  => Time.now
+                  }
+    @invoice_repository.create(attributes)
+    @invoice_repository.delete(4986)
+    expect(@invoice_repository.find_by_id(4986)).to eq(nil)
+  end
 end
