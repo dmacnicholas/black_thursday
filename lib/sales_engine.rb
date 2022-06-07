@@ -13,6 +13,4 @@ class SalesEngine
   def self.from_csv(data)
     SalesEngine.new(data[:items], data[:merchants], data[:invoice], data[:invoice_items], data[:transactions])
   end
-
-
 end

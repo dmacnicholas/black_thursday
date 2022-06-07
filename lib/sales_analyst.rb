@@ -165,4 +165,88 @@ class SalesAnalyst
     end
     amounts.sum.to_f
   end
+
+  def total_revenue_by_date(date)
+    invoice_items = @invoice_item_repository.all.find_all { |invoice_item| invoice_item.created_at[0..9] == date.to_s[0..9] }
+    amounts = invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }
+    amounts.sum.to_f
+  end
+
+  def top_revenue_earners(number = 20)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_item_hash
+    invoice_item_totals
+    merchant_invoice_totals_sorted
+    top_performing_merchant_ids(number)
+    top_performing_merchants_array
+  end
+
+  def merchant_invoice_hash
+    @merchant_invoices = {}
+    @merch_ids.each do |merch|
+      @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
+    end
+    @merchant_invoices
+  end
+
+  def invoice_item_hash
+    @ii = Hash.new {|hash, key| hash[key] = []}
+    @merchant_invoices.each do |merch_id, invoices|
+      invoices.each do |invoice|
+        @ii[merch_id] << @invoice_item_repository.all.find_all { |invoice_item| invoice_item.invoice_id == invoice.id }
+      end
+    end
+    @ii
+  end
+
+  def invoice_item_totals
+    @totals = Hash.new {|hash, key| hash[key] = []}
+    @ii.each do |merch_id, inv_item_collection|
+      inv_item_collection.each do |inv_items|
+        inv_items.each do |inv_item|
+          @totals[merch_id] << inv_item.quantity * inv_item.unit_price
+        end
+      end
+    end
+    @totals
+  end
+
+  def merchant_invoice_totals_sorted
+    @merchant_totals = Hash.new
+    @totals.each { |merch_id, array| @merchant_totals[merch_id] = array.sum.to_f }
+    @sorted_totals = @merchant_totals.sort_by { |merchant_id, total| -total }
+  end
+
+  def top_performing_merchant_ids(number)
+    @merch_ids = []
+    @sorted_totals.each do |total|
+      if @sorted_totals.index(total) < number
+        @merch_ids << total[0]
+      end
+    end
+    @merch_ids
+  end
+
+  def top_performing_merchants_array
+    answer = @merch_ids.flat_map do |merch_id|
+      @merchant_repository.all.find_all {|merch| merch.id == merch_id}
+    end
+    answer
+  end
+
+  def merchants_with_pending_invoices
+    merchants = []
+    merchant_ids
+    merchant_invoice_hash.each { |merch_id, invoices| invoices.each { |invoice| invoice.status == :pending ? merchants << merch_id : nil }}
+    pending_merchants = merchants.uniq.flat_map { |merchant| @merchant_repository.all.find_all {|merch| merch.id == merchant }}
+  end
+
+  def merchants_with_only_one_item
+    @merchant_ids_with_one_item = merchant_ids.find_all do |id|
+      @item_repository.find_all_by_merchant_id(id).count == 1
+    end
+    merchants_with_one_item = @merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
+  end
 end
