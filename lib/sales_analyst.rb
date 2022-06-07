@@ -250,4 +250,20 @@ class SalesAnalyst
     end
     merchants_with_one_item = @merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
   end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item
+    month_num = Date::MONTHNAMES.index(month)
+    csv_of_one_item_merchants
+    merchants_list = @csv.map do |row|
+      row[:updated_at][5..6] == "%02d" % month_num ? Merchant.new(:id => row[:id], :name => row[:name]) : nil
+    end
+    merchants_list.compact
+  end
+
+  def csv_of_one_item_merchants
+    @csv = CSV.read(@merchant_repository.file_path, headers: true, header_converters: :symbol).select do |row|
+      @merchant_ids_with_one_item.include?(row[:id].to_i)
+    end
+  end
 end
