@@ -276,4 +276,14 @@ class SalesAnalyst
     end
   end
 
+  def most_sold_item_for_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    items_hash = Hash.new(0)
+    items = invoice_item_hash[merchant_id].flatten
+    items.each { |invoice_item| items_hash[invoice_item.item_id] += invoice_item.quantity }
+    max_match = items_hash.select { |item, count| count == items_hash.values.max }
+    test = max_match.keys.map { |item| @item_repository.find_by_id(item) }
+  end
+
 end

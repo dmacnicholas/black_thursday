@@ -73,14 +73,14 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.bottom_merchants_by_invoice_count.length).to eq(4)
   # end
   #
-  it 'finds the top days of the week by invoice count' do
-    expect(@sales_analyst.top_days_by_invoice_count.length).to eq(1)
-    expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
-  end
-
-  it 'can find the best day' do
-    expect(@sales_analyst.best_day(0)).to eq("Sunday")
-  end
+  # it 'finds the top days of the week by invoice count' do
+  #   expect(@sales_analyst.top_days_by_invoice_count.length).to eq(1)
+  #   expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
+  # end
+  #
+  # it 'can find the best day' do
+  #   expect(@sales_analyst.best_day(0)).to eq("Sunday")
+  # end
   #
   # it 'returns the invoice status percentage of if invoices with given status' do
   #   expect(@sales_analyst.invoice_status(:pending)).to eq(29.55)
@@ -220,4 +220,10 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.total_revenue_for_merchant(12334194).class).to eq(BigDecimal)
   #   expect(@sales_analyst.total_revenue_for_merchant(12334194)).to eq(BigDecimal(@sales_analyst.revenue_by_merchant(12334194)))
   # end
+
+  it 'returns the item sold most for a single merchant' do
+    expect(@sales_analyst.most_sold_item_for_merchant(12334194).class).to eq(Array)
+    expect(@sales_analyst.most_sold_item_for_merchant(12334194).first.class).to eq(Item)
+    expect(@sales_analyst.most_sold_item_for_merchant(12334194).first.id).to eq(263519844)
+  end
 end

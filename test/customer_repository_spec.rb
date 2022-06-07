@@ -75,8 +75,4 @@ RSpec.describe CustomerRepository do
       @customer_repository.delete(1001)
       expect(@customer_repository.find_by_id(1001)).to eq(nil)
     end
-
-
-
-
 end
