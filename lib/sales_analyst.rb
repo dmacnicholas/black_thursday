@@ -244,9 +244,9 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item
-    merchant_ids_with_one_item = merchant_ids.find_all do |id|
+    @merchant_ids_with_one_item = merchant_ids.find_all do |id|
       @item_repository.find_all_by_merchant_id(id).count == 1
     end
-    merchants_with_one_item = merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
+    merchants_with_one_item = @merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
   end
 end
