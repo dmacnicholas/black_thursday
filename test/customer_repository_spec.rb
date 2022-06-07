@@ -58,9 +58,22 @@ RSpec.describe CustomerRepository do
       @customer_repository.update(1001,first_name: "Billy")
 
       expect(@customer_repository.find_by_id(1001).last_name).to eq("Smith")
-      # expect(@customer_repository.find_by_id(1001).first_name).to eq("Billy")
+      expect(@customer_repository.find_by_id(1001).first_name).to eq("Billy")
 
       expect(@customer_repository.find_by_id(1001).updated_at).to be > customer_updated_at
+    end
+
+    it 'delete the Transaction instance with the corresponding id' do
+      attributes = {
+          :first_name => "Joan",
+          :last_name => "Clarke",
+          :created_at => Time.now,
+          :updated_at => Time.now
+        }
+      @customer_repository.create(attributes)
+      expect(@customer_repository.find_by_id(1001)).to be_a Customer
+      @customer_repository.delete(1001)
+      expect(@customer_repository.find_by_id(1001)).to eq(nil)
     end
 
 
