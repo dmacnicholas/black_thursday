@@ -122,27 +122,20 @@ class SalesAnalyst
     day_of_week
     average_invoices_per_day_standard_deviation
     top_day =[]
-    @tally.each do |day, total|
-      if total > (@mean + @sd)
-        top_day << day
-      end
-    end
-    top_day
-    # best_day(top_day)
+    @tally.each {|day, total| total > (@mean + @sd) ? top_day << day : nil }
+    top_day.map  {|day| best_day(day)}
   end
 
-  # def best_day(day)
-  #   days = {0 => "Sunday",
-  #           1 => "Monday",
-  #           2 => "Tuesday",
-  #           3 => "Wednesday",
-  #           4 => "Thursday",
-  #           5 => "Friday",
-  #           6 => "Saturday"}
-  #
-  #   top = days[day]
-  #
-  # end
+  def best_day(day)
+    days = {0 => "Sunday",
+            1 => "Monday",
+            2 => "Tuesday",
+            3 => "Wednesday",
+            4 => "Thursday",
+            5 => "Friday",
+            6 => "Saturday"}
+    days[day]
+  end
 
   def invoice_status(status)
     ((@invoice_repository.find_all_by_status(status).count / @invoice_repository.all.count.to_f) * 100).round(2)
@@ -266,4 +259,21 @@ class SalesAnalyst
       @merchant_ids_with_one_item.include?(row[:id].to_i)
     end
   end
+
+  def revenue_by_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_item_hash
+    invoice_item_totals
+    total_revenue_for_merchant(merchant_id)
+  end
+
+  def total_revenue_for_merchant(merchant_id)
+    merchant_invoice_totals_sorted.each do |merchant|
+      if merchant[0] == merchant_id
+        return BigDecimal(merchant[1] * 0.01, 10)
+      end
+    end
+  end
+
 end

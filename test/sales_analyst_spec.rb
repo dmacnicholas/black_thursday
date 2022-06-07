@@ -73,10 +73,14 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.bottom_merchants_by_invoice_count.length).to eq(4)
   # end
   #
-  # it 'finds the top days of the week by invoice count' do
-  #   expect(@sales_analyst.top_days_by_invoice_count.length).to eq(1)
-  #   # expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
-  # end
+  it 'finds the top days of the week by invoice count' do
+    expect(@sales_analyst.top_days_by_invoice_count.length).to eq(1)
+    expect(@sales_analyst.top_days_by_invoice_count.first).to eq("Wednesday")
+  end
+
+  it 'can find the best day' do
+    expect(@sales_analyst.best_day(0)).to eq("Sunday")
+  end
   #
   # it 'returns the invoice status percentage of if invoices with given status' do
   #   expect(@sales_analyst.invoice_status(:pending)).to eq(29.55)
@@ -192,15 +196,28 @@ RSpec.describe SalesAnalyst do
   #   expect(@sales_analyst.merchants_with_only_one_item.count).to eq(243)
   # end
 
-  it 'return merchants that only sell one by item by the month they registered' do
-    expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").length).to eq(16)
-    expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").first.class).to eq(Merchant)
-  end
-
-  it 'returns a csv of merchants with one item' do
-    @sales_analyst.merchants_with_only_one_item
-    expect(@sales_analyst.csv_of_one_item_merchants.count).to eq(243)
-    expect(@sales_analyst.csv_of_one_item_merchants.first.class).to eq(CSV::Row)
-  end
-
+  # it 'return merchants that only sell one by item by the month they registered' do
+  #   expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").length).to eq(16)
+  #   expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").first.class).to eq(Merchant)
+  # end
+  #
+  # it 'returns a csv of merchants with one item' do
+  #   @sales_analyst.merchants_with_only_one_item
+  #   expect(@sales_analyst.csv_of_one_item_merchants.count).to eq(243)
+  #   expect(@sales_analyst.csv_of_one_item_merchants.first.class).to eq(CSV::Row)
+  # end
+  #
+  # it 'finds the total revenue for a single merchant' do
+  #   expect(@sales_analyst.revenue_by_merchant(12334194).class).to eq(BigDecimal)
+  #   expect(@sales_analyst.revenue_by_merchant(12334194)).to eq(BigDecimal(@sales_analyst.revenue_by_merchant(12334194)))
+  # end
+  #
+  # it 'returns the total for a single merchant' do
+  #   @sales_analyst.merchant_ids
+  #   @sales_analyst.merchant_invoice_hash
+  #   @sales_analyst.invoice_item_hash
+  #   @sales_analyst.invoice_item_totals
+  #   expect(@sales_analyst.total_revenue_for_merchant(12334194).class).to eq(BigDecimal)
+  #   expect(@sales_analyst.total_revenue_for_merchant(12334194)).to eq(BigDecimal(@sales_analyst.revenue_by_merchant(12334194)))
+  # end
 end
