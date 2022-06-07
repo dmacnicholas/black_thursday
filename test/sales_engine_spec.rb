@@ -7,7 +7,8 @@ RSpec.describe SalesEngine do
       :merchants => "./data/merchants.csv",
       :invoice => "./data/invoices.csv",
       :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv"
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
     })
   end
 
@@ -300,4 +301,76 @@ RSpec.describe SalesEngine do
     @sales_engine.transactions.delete(4986)
     expect(@sales_engine.transactions.find_by_id(4986)).to eq(nil)
   end
+
+  it 'exists' do
+    expect(@sales_engine.customer_repository).to be_a(CustomerRepository)
+  end
+
+  it 'returns an array of all know customer instances' do
+    expect(@sales_engine.customer_repository.all.count).to eq(1000)
+  end
+
+  it 'returns either nil or an instance of Customer with a matching ID' do
+    expect(@sales_engine.customer_repository.find_by_id(100)).to be_a(Customer)
+    expect(@sales_engine.customer_repository.find_by_id(3000)).to eq(nil)
+  end
+
+  it 'returns either [] or one or more matches which have a first name matching ' do
+    fragment = "oe"
+    expected = @sales_engine.customer_repository.find_all_by_first_name(fragment)
+    expect(@sales_engine.customer_repository.find_all_by_first_name("oe").count).to eq(8)
+    expect(@sales_engine.customer_repository.find_all_by_first_name("hh")).to eq([])
+  end
+
+  it 'returns either [] or one or more matches which have a last name matching ' do
+    fragment = "On"
+    expected = @sales_engine.customer_repository.find_all_by_last_name(fragment)
+    expect(@sales_engine.customer_repository.find_all_by_last_name("On").count).to eq(85)
+    expect(@sales_engine.customer_repository.find_all_by_last_name("HH")).to eq([])
+  end
+
+  it 'creates a new Customer instance with the provided attributes ' do
+    attributes = {
+        :first_name => "Joan",
+        :last_name => "Clarke",
+        :created_at => Time.now,
+        :updated_at => Time.now
+      }
+      @sales_engine.customer_repository.create(attributes)
+      expect(@sales_engine.customer_repository.all[-1].first_name).to eq("Joan")
+      expect(@sales_engine.customer_repository.all[-1].id).to eq(1001)
+  end
+
+  it 'can update attributes with a corresponding id' do
+    attributes = {
+        :first_name => "Joan",
+        :last_name => "Clarke",
+        :created_at => Time.now,
+        :updated_at => Time.now
+      }
+      @sales_engine.customer_repository.create(attributes)
+      customer_updated_at = @sales_engine.customer_repository.find_by_id(1001).updated_at
+      expect(@sales_engine.customer_repository.find_by_id(1001)).to be_a(Customer)
+      @sales_engine.customer_repository.update(1001,last_name: "Smith")
+      @sales_engine.customer_repository.update(1001,first_name: "Billy")
+
+      expect(@sales_engine.customer_repository.find_by_id(1001).last_name).to eq("Smith")
+      expect(@sales_engine.customer_repository.find_by_id(1001).first_name).to eq("Billy")
+
+      expect(@sales_engine.customer_repository.find_by_id(1001).updated_at).to be > customer_updated_at
+    end
+
+    it 'delete the Transaction instance with the corresponding id' do
+      attributes = {
+          :first_name => "Joan",
+          :last_name => "Clarke",
+          :created_at => Time.now,
+          :updated_at => Time.now
+        }
+      @sales_engine.customer_repository.create(attributes)
+      expect(@sales_engine.customer_repository.find_by_id(1001)).to be_a Customer
+      @sales_engine.customer_repository.delete(1001)
+      expect(@sales_engine.customer_repository.find_by_id(1001)).to eq(nil)
+    end
+
 end
