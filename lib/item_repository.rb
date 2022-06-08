@@ -1,5 +1,5 @@
-require 'csv'
-require 'BigDecimal'
+# require 'csv'
+# require 'BigDecimal'
 require_relative './enumerable'
 
 class ItemRepository

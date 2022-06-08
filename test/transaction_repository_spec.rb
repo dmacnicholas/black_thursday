@@ -64,6 +64,14 @@ RSpec.describe TransactionRepository do
 
     update_fail = {invoice_id: 10}
     expect(@transaction_repository.update(4986, update_fail)).to eq(nil)
+
+    update_cc = {credit_card_number: "4242424242420000"}
+    @transaction_repository.update(4986, update_cc)
+    expect(@transaction_repository.find_by_id(4986).credit_card_number).to eq("4242424242420000")
+
+    update_cc_exp = {credit_card_expiration_date: "9999"}
+    @transaction_repository.update(4986, update_cc_exp)
+    expect(@transaction_repository.find_by_id(4986).credit_card_expiration_date).to eq("9999")
   end
 
   it 'can delete an instance of a Transaction' do

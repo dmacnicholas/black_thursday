@@ -372,5 +372,4 @@ RSpec.describe SalesEngine do
       @sales_engine.customer_repository.delete(1001)
       expect(@sales_engine.customer_repository.find_by_id(1001)).to eq(nil)
     end
-
 end

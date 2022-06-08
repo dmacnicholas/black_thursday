@@ -3,7 +3,7 @@ require './lib/merchant'
 RSpec.describe Merchant do
   it 'exists' do
     merchant = Merchant.new({:id => 5, :name => "Turing School"})
-
+    
     expect(merchant).to be_a(Merchant)
   end
 

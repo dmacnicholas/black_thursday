@@ -3,19 +3,19 @@ require_relative './enumerable'
 class SalesAnalyst
   include Enumerable
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
-  :transaction_repository, :invoice_item_repository
+  :transaction_repository, :invoice_item_repository, :customer_repository
 
-  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo)
+  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo, customer_repo)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
     @transaction_repository = transaction_repo
     @invoice_item_repository = invoice_item_repo
+    @customer_repository = customer_repo
   end
 
   def average_items_per_merchant
     (@item_repository.all.length.to_f / @merchant_repository.all.length).round(2)
-    #round(2) rounds it to the second decimal place (2.88 vs 2.8842)
   end
 
   def average_items_per_merchant_standard_deviation
@@ -121,27 +121,20 @@ class SalesAnalyst
     day_of_week
     average_invoices_per_day_standard_deviation
     top_day =[]
-    @tally.each do |day, total|
-      if total > (@mean + @sd)
-        top_day << day
-      end
-    end
-    top_day
-    # best_day(top_day)
+    @tally.each {|day, total| total > (@mean + @sd) ? top_day << day : nil }
+    top_day.map  {|day| best_day(day)}
   end
 
-  # def best_day(day)
-  #   days = {0 => "Sunday",
-  #           1 => "Monday",
-  #           2 => "Tuesday",
-  #           3 => "Wednesday",
-  #           4 => "Thursday",
-  #           5 => "Friday",
-  #           6 => "Saturday"}
-  #
-  #   top = days[day]
-  #
-  # end
+  def best_day(day)
+    days = {0 => "Sunday",
+            1 => "Monday",
+            2 => "Tuesday",
+            3 => "Wednesday",
+            4 => "Thursday",
+            5 => "Friday",
+            6 => "Saturday"}
+    days[day]
+  end
 
   def invoice_status(status)
     ((@invoice_repository.find_all_by_status(status).count / @invoice_repository.all.count.to_f) * 100).round(2)
@@ -248,5 +241,57 @@ class SalesAnalyst
       @item_repository.find_all_by_merchant_id(id).count == 1
     end
     merchants_with_one_item = @merchant_ids_with_one_item.map {|merch_id| @merchant_repository.find_by_id(merch_id)}
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item
+    month_num = Date::MONTHNAMES.index(month)
+    csv_of_one_item_merchants
+    merchants_list = @csv.map do |row|
+      row[:updated_at][5..6] == "%02d" % month_num ? Merchant.new(:id => row[:id], :name => row[:name]) : nil
+    end
+    merchants_list.compact
+  end
+
+  def csv_of_one_item_merchants
+    @csv = CSV.read(@merchant_repository.file_path, headers: true, header_converters: :symbol).select do |row|
+      @merchant_ids_with_one_item.include?(row[:id].to_i)
+    end
+  end
+
+  def revenue_by_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_item_hash
+    invoice_item_totals
+    total_revenue_for_merchant(merchant_id)
+  end
+
+  def total_revenue_for_merchant(merchant_id)
+    merchant_invoice_totals_sorted.each do |merchant|
+      if merchant[0] == merchant_id
+        return BigDecimal(merchant[1] * 0.01, 10)
+      end
+    end
+  end
+
+  def most_sold_item_for_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    items_hash = Hash.new(0)
+    items = invoice_item_hash[merchant_id].flatten
+    items.each { |invoice_item| items_hash[invoice_item.item_id] += invoice_item.quantity }
+    max_match = items_hash.select { |item, count| count == items_hash.values.max }
+    test = max_match.keys.map { |item| @item_repository.find_by_id(item) }
+  end
+
+  def best_item_for_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_items = invoice_item_hash[merchant_id].flatten
+    items_revenue = Hash.new(0)
+    invoice_items.each { |invoice_item| items_revenue[invoice_item.item_id] += invoice_item.quantity * invoice_item.unit_price }
+    top_item = items_revenue.select { |item, revenue| revenue == items_revenue.values.max }
+    @item_repository.find_by_id(top_item.keys[0])
   end
 end
