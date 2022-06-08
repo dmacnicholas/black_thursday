@@ -4,6 +4,7 @@ class SalesEngine
   attr_reader :items, :merchants, :analyst, :invoices, :invoice_items, :transactions, :customers
 
   def initialize(items_path, merchants_path, invoice_path, invoice_items_path, transactions_path, customers_path)
+
     @items = ItemRepository.new(items_path)
     @merchants = MerchantRepository.new(merchants_path)
     @invoices = InvoiceRepository.new(invoice_path)

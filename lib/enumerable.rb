@@ -14,9 +14,13 @@ module Enumerable #rename to Crudable
   end
 
   def update(id, attributes)
-    key = attributes.keys[0]
-    value = attributes.values[0]
-    change(id, key, value)
+    if attributes == {}
+      return false 
+    else
+      key = attributes.keys[0]
+      value = attributes.values[0]
+      change(id, key, value)
+    end
   end
 
   def find_all_by_merchant_id(merchant_id)

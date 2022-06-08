@@ -5,7 +5,7 @@ class Transaction
   def initialize(info)
     @id = info[:id].to_i
     @invoice_id = info[:invoice_id].to_i
-    @credit_card_number = info[:credit_card_number].to_i
+    @credit_card_number = info[:credit_card_number]
     @credit_card_expiration_date = info[:credit_card_expiration_date]
     @result = info[:result].downcase.to_sym
     @created_at = info[:created_at]

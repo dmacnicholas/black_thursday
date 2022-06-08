@@ -14,8 +14,8 @@ class CustomerRepository
                         :id => row[:id],
                         :first_name => row[:first_name],
                         :last_name => row[:last_name],
-                        :created_at => Time.now,
-                        :updated_at => Time.now
+                        :created_at => Time.parse(row[:created_at]),
+                        :updated_at => Time.parse(row[:updated_at])
                         })
     end
   end
@@ -44,10 +44,11 @@ class CustomerRepository
 
   def add_new(new_id, attributes)
     @all << Customer.new({
-                          id: new_id,                                   first_name: attributes[:first_name],
+                          id: new_id,
+                          first_name: attributes[:first_name],
                           last_name: attributes[:last_name],
-                          created_at: Time.now,
-                          updated_at: Time.now
+                          created_at: attributes[:created_at],
+                          updated_at: attributes[:updated_at]
                         })
 
   end
