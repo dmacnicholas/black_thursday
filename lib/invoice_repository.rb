@@ -1,7 +1,7 @@
-require_relative './enumerable'
+require_relative './crudable'
 
 class InvoiceRepository
-  include Enumerable
+  include Crudable
   attr_reader :all, :file_path
 
   def initialize(file_path)

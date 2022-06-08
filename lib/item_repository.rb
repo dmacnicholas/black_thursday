@@ -1,9 +1,9 @@
 require 'csv'
 require 'BigDecimal'
-require_relative './enumerable'
+require_relative './crudable'
 
 class ItemRepository
-  include Enumerable
+  include Crudable
   attr_accessor :all
 
   def initialize(file_path)

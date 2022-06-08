@@ -1,16 +1,17 @@
-require_relative './enumerable'
+require_relative './crudable'
 
 class SalesAnalyst
-  include Enumerable
+  include Crudable
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
-  :transaction_repository, :invoice_item_repository
+  :transaction_repository, :invoice_item_repository, :customer_repository
 
-  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo)
+  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo, customer_repository)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
     @transaction_repository = transaction_repo
     @invoice_item_repository = invoice_item_repo
+    @customer_repository = customer_repository
   end
 
   def average_items_per_merchant
@@ -126,22 +127,19 @@ class SalesAnalyst
         top_day << day
       end
     end
-    top_day
-    # best_day(top_day)
+    top_day.map  {|day| best_day(day)}
   end
 
-  # def best_day(day)
-  #   days = {0 => "Sunday",
-  #           1 => "Monday",
-  #           2 => "Tuesday",
-  #           3 => "Wednesday",
-  #           4 => "Thursday",
-  #           5 => "Friday",
-  #           6 => "Saturday"}
-  #
-  #   top = days[day]
-  #
-  # end
+  def best_day(day)
+    days = {0 => "Sunday",
+            1 => "Monday",
+            2 => "Tuesday",
+            3 => "Wednesday",
+            4 => "Thursday",
+            5 => "Friday",
+            6 => "Saturday"}
+    days[day]
+  end
 
   def invoice_status(status)
     ((@invoice_repository.find_all_by_status(status).count / @invoice_repository.all.count.to_f) * 100).round(2)

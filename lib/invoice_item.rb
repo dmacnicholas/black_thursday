@@ -1,7 +1,7 @@
-require_relative './enumerable'
+require_relative './crudable'
 
 class InvoiceItem
-  include Enumerable
+  include Crudable
   attr_reader :id, :item_id, :invoice_id, :created_at
   attr_accessor :quantity, :unit_price, :updated_at
 

@@ -1,7 +1,7 @@
-require_relative './enumerable'
+require_relative './crudable'
 
 class TransactionRepository
-  include Enumerable
+  include Crudable
   attr_reader :all
 
   def initialize(file_path)
