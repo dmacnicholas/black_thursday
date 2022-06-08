@@ -16,7 +16,6 @@ class SalesAnalyst
 
   def average_items_per_merchant
     (@item_repository.all.length.to_f / @merchant_repository.all.length).round(2)
-    #round(2) rounds it to the second decimal place (2.88 vs 2.8842)
   end
 
   def average_items_per_merchant_standard_deviation
