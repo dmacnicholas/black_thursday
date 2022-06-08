@@ -101,7 +101,7 @@ RSpec.describe SalesAnalyst do
   end
 
   it 'returns the total revenue for a given date' do
-    expect(@sales_analyst.total_revenue_by_date(Time.parse("2015-08-28"))).to eq(272.70)
+    expect(@sales_analyst.total_revenue_by_date(Time.parse("2009-02-07"))).to eq(21067.77)
   end
 
   it 'returns the top performing merchants in terms of revenue' do

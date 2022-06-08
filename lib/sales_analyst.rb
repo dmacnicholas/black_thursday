@@ -160,12 +160,12 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoice_items = @invoice_item_repository.all.find_all do |invoice_item|
-      invoice_item.created_at.to_s[0..9] == date.to_s[0..9]
-    end
-    amounts = invoice_items.map { |ii|
-      ii.quantity * ii.unit_price }
-    amounts.sum.to_f
+    invoices = @invoice_repository.all.select { |invoice| invoice.created_at.to_s[0..9] == date.to_s[0..9]}
+    invoice_items = []
+    invoices.each { |invoice| @invoice_item_repository.all.each { |row|
+        row.invoice_id == invoice.id ? invoice_items << row : nil }}
+    amounts = (invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }).sum.to_f
   end
 
   def top_revenue_earners(number = 20)
