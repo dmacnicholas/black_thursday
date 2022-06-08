@@ -1,5 +1,5 @@
 require './lib/entry.rb'
-require_relative 'spec_helper'
+# require_relative 'spec_helper'
 
 RSpec.describe InvoiceItemRepository do
   before :each do

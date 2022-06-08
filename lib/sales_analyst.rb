@@ -71,7 +71,7 @@ class SalesAnalyst
   end
 
   def invoices_count_list
-    invoices_list = @merch_ids.map {|id| @invoice_repository.find_all_by_merchant_id(id).count}
+    invoices_list = @merch_ids.map { |id| @invoice_repository.find_all_by_merchant_id(id).count }
   end
 
   def average_invoices_per_merchant_standard_deviation
@@ -195,10 +195,10 @@ class SalesAnalyst
   end
 
   def invoice_item_totals
-    @totals = Hash.new {|hash, key| hash[key] = []}
+    @totals = Hash.new { |hash, key| hash[key] = [] }
     @ii.each do |merch_id, inv_item_collection|
       inv_item_collection.each do |inv_items|
-        inv_items.each {|inv_item| @totals[merch_id] << inv_item.quantity * inv_item.unit_price} end end
+        inv_items.each { |inv_item| @totals[merch_id] << inv_item.unit_price } end end
     @totals
   end
 
