@@ -170,7 +170,6 @@ class SalesAnalyst
 
   def top_revenue_earners(number = 20)
     merchant_ids
-    binding.pry
     merchant_invoice_hash
     invoice_item_hash
     invoice_item_totals
@@ -185,7 +184,6 @@ class SalesAnalyst
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
     @merchant_invoices
-    binding.pry
   end
 
   def invoice_item_hash
