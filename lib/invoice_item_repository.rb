@@ -1,4 +1,5 @@
 require_relative './enumerable'
+require_relative 'entry'
 
 class InvoiceItemRepository
   include Enumerable
@@ -15,10 +16,14 @@ class InvoiceItemRepository
         invoice_id: row[:invoice_id],
         quantity: row[:quantity],
         unit_price: BigDecimal(row[:unit_price].to_i * 0.01, 10),
-        created_at: row[:created_at],
-        updated_at: row[:updated_at]
+        created_at: Time.parse(row[:created_at]),
+        updated_at: Time.parse(row[:updated_at])
         })
     end
+  end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
   end
 
   def find_all_by_invoice_id(inv_id)
@@ -32,11 +37,15 @@ class InvoiceItemRepository
       :invoice_id => attributes[:invoice_id],
       :quantity => attributes[:quantity],
       :unit_price => attributes[:unit_price],
-      :created_at => attributes[:created_at],
-      :updated_at => attributes[:updated_at]
+      :created_at => Time.parse(attributes[:created_at].to_s),
+      :updated_at => Time.parse(attributes[:updated_at].to_s)
       })
     @all.append(ii)
     ii
+  end
+
+  def find_all_by_item_id(item_id)
+    test = @all.find_all { |invoice_item| invoice_item.item_id == item_id }
   end
 
   def change(id, key, value)

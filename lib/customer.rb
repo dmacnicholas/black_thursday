@@ -8,6 +8,5 @@ class Customer
     @last_name = customer[:last_name]
     @created_at = customer[:created_at]
     @updated_at = customer[:updated_at]
-
   end
 end

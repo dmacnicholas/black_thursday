@@ -1,11 +1,11 @@
-require_relative './spec_helper'
+require './lib/entry.rb'
 
 RSpec.describe SalesAnalyst do
   before :each do
     sales_engine = SalesEngine.from_csv({
       :items => "./data/items.csv",
       :merchants => "./data/merchants.csv",
-      :invoice => "./data/invoices.csv",
+      :invoices => "./data/invoices.csv",
       :invoice_items => "./data/invoice_items.csv",
       :transactions => "./data/transactions.csv",
       :customers => "./data/customers.csv"
@@ -101,7 +101,7 @@ RSpec.describe SalesAnalyst do
   end
 
   it 'returns the total revenue for a given date' do
-    expect(@sales_analyst.total_revenue_by_date(Time.parse("2015-08-28"))).to eq(272.70)
+    expect(@sales_analyst.total_revenue_by_date(Time.parse("2009-02-07"))).to eq(21067.77)
   end
 
   it 'returns the top performing merchants in terms of revenue' do

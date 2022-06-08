@@ -5,12 +5,12 @@ class SalesAnalyst
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
   :transaction_repository, :invoice_item_repository, :customer_repository
 
-  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo, customer_repo)
+  def initialize(item_repo, merchant_repo, invoice_repo, invoice_item_repo, transaction_repo, customer_repo)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
-    @transaction_repository = transaction_repo
     @invoice_item_repository = invoice_item_repo
+    @transaction_repository = transaction_repo
     @customer_repository = customer_repo
   end
 
@@ -160,14 +160,17 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoice_items = @invoice_item_repository.all.find_all { |invoice_item| invoice_item.created_at[0..9] == date.to_s[0..9] }
-    amounts = invoice_items.map { |ii|
-      ii.quantity * ii.unit_price }
-    amounts.sum.to_f
+    invoices = @invoice_repository.all.select { |invoice| invoice.created_at.to_s[0..9] == date.to_s[0..9]}
+    invoice_items = []
+    invoices.each { |invoice| @invoice_item_repository.all.each { |row|
+        row.invoice_id == invoice.id ? invoice_items << row : nil }}
+    amounts = (invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }).sum.to_f
   end
 
   def top_revenue_earners(number = 20)
     merchant_ids
+    binding.pry
     merchant_invoice_hash
     invoice_item_hash
     invoice_item_totals
@@ -177,11 +180,12 @@ class SalesAnalyst
   end
 
   def merchant_invoice_hash
-    @merchant_invoices = {}
+    @merchant_invoices = Hash.new {|hash, key| hash[key] = []}
     @merch_ids.each do |merch|
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
     @merchant_invoices
+    binding.pry
   end
 
   def invoice_item_hash

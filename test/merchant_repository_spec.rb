@@ -1,5 +1,4 @@
-require './test/spec_helper'
-
+require './lib/entry.rb'
 
 RSpec.describe MerchantRepository do
 
@@ -8,7 +7,6 @@ RSpec.describe MerchantRepository do
   end
 
   it 'exists' do
-
     expect(@merchantrepository).to be_a(MerchantRepository)
   end
 
@@ -46,20 +44,20 @@ RSpec.describe MerchantRepository do
 
   it 'can create a new Merchant' do
 
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
 
     expect(@merchantrepository.all[-1].name).to eq("TuringForLife")
     expect(@merchantrepository.all[-1].id).to eq(12337412)
   end
 
   it 'deletes merchant with corrosponding id' do
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
     @merchantrepository.delete(12337412)
     expect(@merchantrepository.find_by_id(12337412)).to eq(nil)
   end
 
   it 'update the name' do
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
 
     @merchantrepository.update(12337412, {name: "TuringForever"})
 

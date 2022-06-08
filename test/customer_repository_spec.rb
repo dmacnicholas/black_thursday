@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require './lib/entry.rb'
 
 RSpec.describe CustomerRepository do
   before :each do
@@ -48,7 +48,8 @@ RSpec.describe CustomerRepository do
     attributes = {
         :first_name => "Joan",
         :last_name => "Clarke",
-        :created_at => Time.now,
+        :created_at =>
+         Time.now,
         :updated_at => Time.now
       }
       @customer_repository.create(attributes)
