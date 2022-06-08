@@ -1,7 +1,7 @@
-require_relative './enumerable'
+require_relative 'crudable'
 
 class SalesAnalyst
-  include Enumerable
+  include Crudable
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
   :transaction_repository, :invoice_item_repository, :customer_repository
 

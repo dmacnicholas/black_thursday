@@ -1,4 +1,4 @@
-module Enumerable #rename to Crudable
+module Crudable #rename to Crudable
 
   def find_by_id(id)
     @all.find {|row| row.id == id}
@@ -15,7 +15,7 @@ module Enumerable #rename to Crudable
 
   def update(id, attributes)
     if attributes == {}
-      return false 
+      return false
     else
       key = attributes.keys[0]
       value = attributes.values[0]

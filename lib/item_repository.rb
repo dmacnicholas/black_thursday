@@ -1,8 +1,8 @@
-require_relative './enumerable'
+require_relative 'crudable'
 require_relative 'entry'
 
 class ItemRepository
-  include Enumerable
+  include Crudable
   attr_accessor :all
 
   def initialize(file_path)
