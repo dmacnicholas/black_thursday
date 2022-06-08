@@ -1,4 +1,4 @@
-require_relative './enumerable'
+require_relative 'crudable'
 require_relative 'entry'
 
 class InvoiceRepository

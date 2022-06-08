@@ -142,10 +142,8 @@ class SalesAnalyst
 
   def invoice_paid_in_full?(id)
     transactions = @transaction_repository.find_all_by_invoice_id(id)
-    if transactions == []
-      return false
-    else
-      transactions.all? do |transaction|
+    if transactions == [] then return false
+    else transactions.all? do |transaction|
         transaction.result == :success
       end
     end
@@ -200,11 +198,7 @@ class SalesAnalyst
     @totals = Hash.new {|hash, key| hash[key] = []}
     @ii.each do |merch_id, inv_item_collection|
       inv_item_collection.each do |inv_items|
-        inv_items.each do |inv_item|
-          @totals[merch_id] << inv_item.quantity * inv_item.unit_price
-        end
-      end
-    end
+        inv_items.each {|inv_item| @totals[merch_id] << inv_item.quantity * inv_item.unit_price} end end
     @totals
   end
 

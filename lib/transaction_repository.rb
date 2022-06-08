@@ -48,20 +48,16 @@ class TransactionRepository
       result: attributes[:result],
       created_at: attributes[:created_at],
       updated_at: attributes[:updated_at]
-      })
+    })
     @all.append(t)
     t
   end
 
   def change(id, key, value)
-    if key == :credit_card_number
-      find_by_id(id).credit_card_number = value
-    elsif key == :credit_card_expiration_date
-      find_by_id(id).credit_card_expiration_date = value
-    elsif key == :result
-      find_by_id(id).result = value
-    else
-      return nil
+    if key == :credit_card_number then find_by_id(id).credit_card_number = value
+    elsif key == :credit_card_expiration_date then find_by_id(id).credit_card_expiration_date = value
+    elsif key == :result then find_by_id(id).result = value
+    else return nil
     end
     find_by_id(id).updated_at = Time.now
   end

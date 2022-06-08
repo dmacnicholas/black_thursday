@@ -42,20 +42,16 @@ class ItemRepository
       created_at: attributes[:created_at],
       updated_at: attributes[:updated_at],
       merchant_id: attributes[:merchant_id]
-      })
+    })
     @all.append(i)
     i
   end
 
   def change(id, key, value)
-    if key == :unit_price
-      find_by_id(id).unit_price = value
-    elsif key == :description
-      find_by_id(id).description = value
-    elsif key == :name
-      find_by_id(id).name = value
-    else
-      return nil
+    if key == :unit_price then find_by_id(id).unit_price = value
+    elsif key == :description then find_by_id(id).description = value
+    elsif key == :name then find_by_id(id).name = value
+    else return nil
     end
     find_by_id(id).updated_at = Time.now
   end

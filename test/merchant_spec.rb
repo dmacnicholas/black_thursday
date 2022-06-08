@@ -15,5 +15,3 @@ RSpec.describe Merchant do
     expect(merchant.name).to eq("Turing School")
   end
 end
-
-#line 15 gives me an error saying that the expected and the got are different but theyre exactly alike

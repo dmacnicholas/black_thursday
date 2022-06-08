@@ -1,4 +1,4 @@
-require_relative './enumerable'
+require_relative 'crudable'
 
 class InvoiceItem
   include Enumerable

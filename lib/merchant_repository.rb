@@ -28,10 +28,8 @@ class MerchantRepository
   end
 
   def change(id, key, value)
-    if key == :name
-      find_by_id(id).name = value
-    else
-      return nil
+    if key == :name then find_by_id(id).name = value
+    else return nil
     end
   end
 end

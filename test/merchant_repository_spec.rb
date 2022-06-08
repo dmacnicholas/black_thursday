@@ -64,5 +64,4 @@ RSpec.describe MerchantRepository do
 
     expect(@merchantrepository.find_by_id(12337412).name).to eq("TuringForever")
   end
-
 end
