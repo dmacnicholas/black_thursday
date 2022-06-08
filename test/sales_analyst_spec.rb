@@ -45,12 +45,12 @@ RSpec.describe SalesAnalyst do
 
   it 'can find the average price of a merchants items' do
     expect(@sales_analyst.average_item_price_for_merchant(12334105)).to eq(16.66)
-    expect(@sales_analyst.average_item_price_for_merchant(12334105).class).to eq(Float)
+    expect(@sales_analyst.average_item_price_for_merchant(12334105).class).to eq(BigDecimal)
   end
 
   it 'find the average price across all merchants' do
     expect(@sales_analyst.average_average_price_per_merchant).to eq(350.29)
-    expect(@sales_analyst.average_average_price_per_merchant.class).to eq(Float)
+    expect(@sales_analyst.average_average_price_per_merchant.class).to eq(BigDecimal)
   end
 
   it 'finds the Golden Items that are two standard deviations above the average item price' do
@@ -98,7 +98,7 @@ RSpec.describe SalesAnalyst do
 
   it 'returns the total amount of an Invoice' do
     expect(@sales_analyst.invoice_total(1)).to eq(21067.77)
-    expect(@sales_analyst.invoice_total(1).class).to eq(Float)
+    expect(@sales_analyst.invoice_total(1).class).to eq(BigDecimal)
   end
 
   it 'returns the total revenue for a given date' do

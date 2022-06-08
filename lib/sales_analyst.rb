@@ -46,7 +46,7 @@ class SalesAnalyst
   def average_item_price_for_merchant(merchant_id)
     items = @item_repository.find_all_by_merchant_id(merchant_id)
     prices = items.map {|item| item.unit_price_to_dollars}
-    (prices.sum/items.count).round(2)
+    BigDecimal((prices.sum/items.count).round(2), 10)
   end
 
   def average_average_price_per_merchant
@@ -154,7 +154,7 @@ class SalesAnalyst
     amounts = transactions.map do |transaction|
       transaction.quantity * transaction.unit_price
     end
-    amounts.sum.to_f
+    BigDecimal(amounts.sum.to_f, 10)
   end
 
   def total_revenue_by_date(date)
@@ -162,8 +162,8 @@ class SalesAnalyst
     invoice_items = []
     invoices.each { |invoice| @invoice_item_repository.all.each { |row|
         row.invoice_id == invoice.id ? invoice_items << row : nil }}
-    amounts = (invoice_items.map { |ii|
-      ii.quantity * ii.unit_price }).sum.to_f
+    amounts = BigDecimal((invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }).sum.to_f, 10)
   end
 
   def top_revenue_earners(number = 20)
