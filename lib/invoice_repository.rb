@@ -1,4 +1,5 @@
 require_relative './enumerable'
+require_relative 'entry'
 
 class InvoiceRepository
   include Enumerable
@@ -14,10 +15,14 @@ class InvoiceRepository
         :customer_id => row[:customer_id],
         :merchant_id => row[:merchant_id],
         :status      => row[:status],
-        :created_at  => row[:created_at],
-        :updated_at  => row[:updated_at]
+        :created_at  => Time.parse(row[:created_at]),
+        :updated_at  => Time.parse(row[:updated_at])
         })
     end
+  end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
   end
 
   def find_all_by_customer_id(cust_id)

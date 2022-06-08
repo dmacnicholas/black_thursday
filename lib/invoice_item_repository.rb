@@ -1,4 +1,5 @@
 require_relative './enumerable'
+require_relative 'entry'
 
 class InvoiceItemRepository
   include Enumerable
@@ -19,6 +20,10 @@ class InvoiceItemRepository
         updated_at: row[:updated_at]
         })
     end
+  end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
   end
 
   def find_all_by_invoice_id(inv_id)

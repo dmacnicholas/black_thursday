@@ -1,4 +1,5 @@
 require_relative './enumerable'
+require_relative 'entry'
 
 class MerchantRepository
   include Enumerable
@@ -12,6 +13,10 @@ class MerchantRepository
     end
   end
 
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
+  end
+
   def find_all_by_name(name)
     @all.find_all do |row|
       row.name.upcase.include?(name.upcase)
@@ -19,7 +24,7 @@ class MerchantRepository
   end
 
   def add_new(new_id, attributes)
-    @all <<  Merchant.new({:id => new_id,:name => attributes})
+    @all <<  Merchant.new({:id => new_id,:name => attributes[:name]})
   end
 
   def change(id, key, value)

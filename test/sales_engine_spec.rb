@@ -1,4 +1,4 @@
-require './test/spec_helper'
+require './lib/entry.rb'
 
 RSpec.describe SalesEngine do
   before :each do

@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require './lib/entry.rb'
 
 RSpec.describe SalesAnalyst do
   before :each do

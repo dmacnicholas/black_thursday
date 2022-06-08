@@ -1,6 +1,5 @@
-# require 'csv'
-# require 'BigDecimal'
 require_relative './enumerable'
+require_relative 'entry'
 
 class ItemRepository
   include Enumerable
@@ -12,12 +11,18 @@ class ItemRepository
 
     CSV.foreach(file_path, headers: true, header_converters: :symbol) do |row|
       @all << Item.new({
-        id: row[:id], name: row[:name], description: row[:description], unit_price: BigDecimal(row[:unit_price].to_i * 0.01, 10), merchant_id: row[:merchant_id], created_at: row[:created_at], updated_at: row[:updated_at]})
+        id: row[:id], name: row[:name], description: row[:description], unit_price: BigDecimal(row[:unit_price].to_i * 0.01, 10), merchant_id: row[:merchant_id], created_at: Time.parse(row[:created_at]), updated_at: Time.parse(row[:updated_at])})
     end
   end
 
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
+  end
+
   def find_all_with_description(description)
-    @all.find_all {|row| row.description.include?(description)}
+    @all.find_all do |row|
+      row.description.downcase.include?(description.downcase)
+    end
   end
 
   def find_all_by_price(price)

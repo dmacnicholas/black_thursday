@@ -1,5 +1,4 @@
-require './test/spec_helper'
-
+require './lib/entry.rb'
 
 RSpec.describe MerchantRepository do
 
@@ -8,7 +7,6 @@ RSpec.describe MerchantRepository do
   end
 
   it 'exists' do
-
     expect(@merchantrepository).to be_a(MerchantRepository)
   end
 
@@ -25,6 +23,12 @@ RSpec.describe MerchantRepository do
     expect(@merchantrepository.find_by_id(123456)).to eq(nil)
     expect(@merchantrepository.find_by_id(12334132)).to be_a(Merchant)
 
+  end
+
+  it 'returns either nil or an instance of Merchant with an item ID' do
+
+    expect(@merchantrepository.find_all_by_item_id(263408101).length).to eq(11)
+    expect(@merchantrepository.find_all_by_item_id(263408101).first.class).to eq(InvoiceItem)
   end
 
   it 'returns either nil or an instance of Merchant with a name' do

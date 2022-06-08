@@ -1,4 +1,5 @@
 require_relative './enumerable'
+require_relative 'entry'
 
 class CustomerRepository
   include Enumerable
@@ -17,6 +18,10 @@ class CustomerRepository
                         :updated_at => Time.now
                         })
     end
+  end
+
+  def inspect
+    "#<#{self.class} #{@all.size} rows>"
   end
 
   def find_all_by_first_name(name)

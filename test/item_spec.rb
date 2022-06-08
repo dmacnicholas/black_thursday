@@ -1,5 +1,4 @@
-require_relative './spec_helper'
-require 'BigDecimal'
+require './lib/entry.rb'
 
 RSpec.describe Item do
   let!(:item) {Item.new({
