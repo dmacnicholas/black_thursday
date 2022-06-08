@@ -286,4 +286,13 @@ class SalesAnalyst
     test = max_match.keys.map { |item| @item_repository.find_by_id(item) }
   end
 
+  def best_item_for_merchant(merchant_id)
+    merchant_ids
+    merchant_invoice_hash
+    invoice_items = invoice_item_hash[merchant_id].flatten
+    items_revenue = Hash.new(0)
+    invoice_items.each { |invoice_item| items_revenue[invoice_item.item_id] += invoice_item.quantity * invoice_item.unit_price }
+    top_item = items_revenue.select { |item, revenue| revenue == items_revenue.values.max }
+    @item_repository.find_by_id(top_item.keys[0])
+  end
 end
