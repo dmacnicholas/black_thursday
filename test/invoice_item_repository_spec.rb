@@ -25,6 +25,12 @@ RSpec.describe InvoiceItemRepository do
     expect(@invoice_item_repository.find_all_by_invoice_id(100).length).to eq(3)
   end
 
+  it 'returns either nil or an instance of InvoiceItem with an item ID' do
+    expect(@invoice_item_repository.find_all_by_item_id(263408101).length).to eq(11)
+    expect(@invoice_item_repository.find_all_by_item_id(263408101).first.class).to eq(InvoiceItem)
+  end
+
+
   it 'creates a new invoice item instance' do
     attributes = {
         :item_id => 7,

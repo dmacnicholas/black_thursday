@@ -25,12 +25,6 @@ RSpec.describe MerchantRepository do
 
   end
 
-  it 'returns either nil or an instance of Merchant with an item ID' do
-
-    expect(@merchantrepository.find_all_by_item_id(263408101).length).to eq(11)
-    expect(@merchantrepository.find_all_by_item_id(263408101).first.class).to eq(InvoiceItem)
-  end
-
   it 'returns either nil or an instance of Merchant with a name' do
 
     expect(@merchantrepository.find_by_name("MiniatureBikez")).to be_a(Merchant)
@@ -50,20 +44,20 @@ RSpec.describe MerchantRepository do
 
   it 'can create a new Merchant' do
 
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
 
     expect(@merchantrepository.all[-1].name).to eq("TuringForLife")
     expect(@merchantrepository.all[-1].id).to eq(12337412)
   end
 
   it 'deletes merchant with corrosponding id' do
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
     @merchantrepository.delete(12337412)
     expect(@merchantrepository.find_by_id(12337412)).to eq(nil)
   end
 
   it 'update the name' do
-    @merchantrepository.create("TuringForLife")
+    @merchantrepository.create({name: "TuringForLife"})
 
     @merchantrepository.update(12337412, {name: "TuringForever"})
 
