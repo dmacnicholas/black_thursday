@@ -1,4 +1,5 @@
 require './lib/entry.rb'
+require_relative 'spec_helper'
 
 RSpec.describe Merchant do
   it 'exists' do
