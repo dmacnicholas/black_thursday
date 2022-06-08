@@ -1,7 +1,7 @@
-require_relative './enumerable'
+require_relative 'crudable'
 
 class SalesAnalyst
-  include Enumerable
+  include Crudable
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
   :transaction_repository, :invoice_item_repository, :customer_repository
 
@@ -46,7 +46,7 @@ class SalesAnalyst
   def average_item_price_for_merchant(merchant_id)
     items = @item_repository.find_all_by_merchant_id(merchant_id)
     prices = items.map {|item| item.unit_price_to_dollars}
-    (prices.sum/items.count).round(2)
+    BigDecimal((prices.sum/items.count).round(2), 10)
   end
 
   def average_average_price_per_merchant
@@ -71,7 +71,7 @@ class SalesAnalyst
   end
 
   def invoices_count_list
-    invoices_list = @merch_ids.map {|id| @invoice_repository.find_all_by_merchant_id(id).count}
+    invoices_list = @merch_ids.map { |id| @invoice_repository.find_all_by_merchant_id(id).count }
   end
 
   def average_invoices_per_merchant_standard_deviation
@@ -142,10 +142,8 @@ class SalesAnalyst
 
   def invoice_paid_in_full?(id)
     transactions = @transaction_repository.find_all_by_invoice_id(id)
-    if transactions == []
-      return false
-    else
-      transactions.all? do |transaction|
+    if transactions == [] then return false
+    else transactions.all? do |transaction|
         transaction.result == :success
       end
     end
@@ -156,7 +154,7 @@ class SalesAnalyst
     amounts = transactions.map do |transaction|
       transaction.quantity * transaction.unit_price
     end
-    amounts.sum.to_f
+    BigDecimal(amounts.sum.to_f, 10)
   end
 
   def total_revenue_by_date(date)
@@ -164,13 +162,12 @@ class SalesAnalyst
     invoice_items = []
     invoices.each { |invoice| @invoice_item_repository.all.each { |row|
         row.invoice_id == invoice.id ? invoice_items << row : nil }}
-    amounts = (invoice_items.map { |ii|
-      ii.quantity * ii.unit_price }).sum.to_f
+    amounts = BigDecimal((invoice_items.map { |ii|
+      ii.quantity * ii.unit_price }).sum.to_f, 10)
   end
 
   def top_revenue_earners(number = 20)
     merchant_ids
-    binding.pry
     merchant_invoice_hash
     invoice_item_hash
     invoice_item_totals
@@ -185,7 +182,6 @@ class SalesAnalyst
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
     @merchant_invoices
-    binding.pry
   end
 
   def invoice_item_hash
@@ -199,14 +195,10 @@ class SalesAnalyst
   end
 
   def invoice_item_totals
-    @totals = Hash.new {|hash, key| hash[key] = []}
+    @totals = Hash.new { |hash, key| hash[key] = [] }
     @ii.each do |merch_id, inv_item_collection|
       inv_item_collection.each do |inv_items|
-        inv_items.each do |inv_item|
-          @totals[merch_id] << inv_item.quantity * inv_item.unit_price
-        end
-      end
-    end
+        inv_items.each { |inv_item| @totals[merch_id] << inv_item.unit_price } end end
     @totals
   end
 

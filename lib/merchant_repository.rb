@@ -1,8 +1,8 @@
-require_relative './enumerable'
+require_relative 'crudable'
 require_relative 'entry'
 
 class MerchantRepository
-  include Enumerable
+  include Crudable
   attr_reader :file_path, :all
 
   def initialize(file_path)
@@ -28,10 +28,8 @@ class MerchantRepository
   end
 
   def change(id, key, value)
-    if key == :name
-      find_by_id(id).name = value
-    else
-      return nil
+    if key == :name then find_by_id(id).name = value
+    else return nil
     end
   end
 end

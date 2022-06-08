@@ -1,4 +1,5 @@
 require './lib/entry.rb'
+require_relative 'spec_helper'
 
 RSpec.describe MerchantRepository do
 
@@ -63,5 +64,4 @@ RSpec.describe MerchantRepository do
 
     expect(@merchantrepository.find_by_id(12337412).name).to eq("TuringForever")
   end
-
 end

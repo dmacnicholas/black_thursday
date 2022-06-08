@@ -1,4 +1,5 @@
 require './lib/entry.rb'
+require_relative 'spec_helper'
 
 RSpec.describe ItemRepository do
   before :each do
@@ -84,5 +85,4 @@ RSpec.describe ItemRepository do
     @item_repo.delete(263567475)
     expect(@item_repo.find_by_id(263567475)).to eq(nil)
   end
-
 end

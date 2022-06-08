@@ -1,8 +1,8 @@
-require_relative './enumerable'
+require_relative 'crudable'
 require_relative 'entry'
 
 class InvoiceItemRepository
-  include Enumerable
+  include Crudable
   attr_reader :all
 
   def initialize(file_path)
@@ -18,7 +18,7 @@ class InvoiceItemRepository
         unit_price: BigDecimal(row[:unit_price].to_i * 0.01, 10),
         created_at: Time.parse(row[:created_at]),
         updated_at: Time.parse(row[:updated_at])
-        })
+      })
     end
   end
 
@@ -49,12 +49,9 @@ class InvoiceItemRepository
   end
 
   def change(id, key, value)
-    if key == :quantity
-      find_by_id(id).quantity = value
-    elsif key == :unit_price
-      find_by_id(id).unit_price = value
-    else
-      return nil
+    if key == :quantity then find_by_id(id).quantity = value
+    elsif key == :unit_price then find_by_id(id).unit_price = value
+    else return nil
     end
     find_by_id(id).updated_at = Time.now
   end

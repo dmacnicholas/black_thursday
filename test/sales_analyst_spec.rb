@@ -1,4 +1,5 @@
 require './lib/entry.rb'
+# require_relative 'spec_helper'
 
 RSpec.describe SalesAnalyst do
   before :each do
@@ -44,12 +45,12 @@ RSpec.describe SalesAnalyst do
 
   it 'can find the average price of a merchants items' do
     expect(@sales_analyst.average_item_price_for_merchant(12334105)).to eq(16.66)
-    expect(@sales_analyst.average_item_price_for_merchant(12334105).class).to eq(Float)
+    expect(@sales_analyst.average_item_price_for_merchant(12334105).class).to eq(BigDecimal)
   end
 
   it 'find the average price across all merchants' do
     expect(@sales_analyst.average_average_price_per_merchant).to eq(350.29)
-    expect(@sales_analyst.average_average_price_per_merchant.class).to eq(Float)
+    expect(@sales_analyst.average_average_price_per_merchant.class).to eq(BigDecimal)
   end
 
   it 'finds the Golden Items that are two standard deviations above the average item price' do
@@ -97,7 +98,7 @@ RSpec.describe SalesAnalyst do
 
   it 'returns the total amount of an Invoice' do
     expect(@sales_analyst.invoice_total(1)).to eq(21067.77)
-    expect(@sales_analyst.invoice_total(1).class).to eq(Float)
+    expect(@sales_analyst.invoice_total(1).class).to eq(BigDecimal)
   end
 
   it 'returns the total revenue for a given date' do
@@ -108,7 +109,7 @@ RSpec.describe SalesAnalyst do
     expect(@sales_analyst.top_revenue_earners.length).to eq(20)
     expect(@sales_analyst.top_revenue_earners[0].class).to eq(Merchant)
     expect(@sales_analyst.top_revenue_earners(5).length).to eq(5)
-    expect(@sales_analyst.top_revenue_earners(10)[3].id).to eq(12334634)
+    expect(@sales_analyst.top_revenue_earners(10).first.id).to eq(12334634)
   end
 
   it 'returns an array of merchant ids' do
@@ -158,7 +159,7 @@ RSpec.describe SalesAnalyst do
     @sales_analyst.merchant_invoice_hash
     @sales_analyst.invoice_item_hash
     @sales_analyst.invoice_item_totals
-    expect(@sales_analyst.merchant_invoice_totals_sorted[0][0]).to eq(12334942)
+    expect(@sales_analyst.merchant_invoice_totals_sorted[0][0]).to eq(12334634)
     expect(@sales_analyst.merchant_invoice_totals_sorted.class).to eq(Array)
   end
 
@@ -169,7 +170,7 @@ RSpec.describe SalesAnalyst do
     @sales_analyst.invoice_item_hash
     @sales_analyst.invoice_item_totals
     @sales_analyst.merchant_invoice_totals_sorted
-    expect(@sales_analyst.top_performing_merchant_ids(20)[0]).to eq(12334942)
+    expect(@sales_analyst.top_performing_merchant_ids(20)[0]).to eq(12334634)
     expect(@sales_analyst.top_performing_merchant_ids(20).class).to eq(Array)
   end
 
@@ -180,7 +181,7 @@ RSpec.describe SalesAnalyst do
     @sales_analyst.invoice_item_totals
     @sales_analyst.merchant_invoice_totals_sorted
     @sales_analyst.top_performing_merchant_ids(20)
-    expect(@sales_analyst.top_performing_merchants_array[0].id).to eq(12334942)
+    expect(@sales_analyst.top_performing_merchants_array[0].id).to eq(12334634)
     expect(@sales_analyst.top_performing_merchants_array.class).to eq(Array)
   end
 
@@ -198,7 +199,7 @@ RSpec.describe SalesAnalyst do
 
   it 'return merchants that only sell one by item by the month they registered' do
     expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").length).to eq(16)
-    expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("June").first.class).to eq(Merchant)
+    expect(@sales_analyst.merchants_with_only_one_item_registered_in_month("March").first.class).to eq(Merchant)
   end
 
   it 'returns a csv of merchants with one item' do

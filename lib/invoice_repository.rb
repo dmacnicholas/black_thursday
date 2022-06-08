@@ -1,8 +1,8 @@
-require_relative './enumerable'
+require_relative 'crudable'
 require_relative 'entry'
 
 class InvoiceRepository
-  include Enumerable
+  include Crudable
   attr_reader :all, :file_path
 
   def initialize(file_path)
@@ -17,7 +17,7 @@ class InvoiceRepository
         :status      => row[:status],
         :created_at  => Time.parse(row[:created_at]),
         :updated_at  => Time.parse(row[:updated_at])
-        })
+      })
     end
   end
 
@@ -35,13 +35,13 @@ class InvoiceRepository
 
   def add_new(new_id, attributes)
     i = Invoice.new({
-                    id: new_id,
-                    customer_id: attributes[:customer_id],
-                    merchant_id: attributes[:merchant_id],
-                    status: attributes[:status],
-                    created_at: Time.now,
-                    updated_at: Time.now
-                    })
+      id: new_id,
+      customer_id: attributes[:customer_id],
+      merchant_id: attributes[:merchant_id],
+      status: attributes[:status],
+      created_at: Time.now,
+      updated_at: Time.now
+    })
     @all.append(i)
     i
   end
