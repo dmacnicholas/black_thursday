@@ -5,12 +5,12 @@ class SalesAnalyst
   attr_reader :item_repository, :merchant_repository, :invoice_repository,
   :transaction_repository, :invoice_item_repository, :customer_repository
 
-  def initialize(item_repo, merchant_repo, invoice_repo, transaction_repo, invoice_item_repo, customer_repo)
+  def initialize(item_repo, merchant_repo, invoice_repo, invoice_item_repo, transaction_repo, customer_repo)
     @item_repository = item_repo
     @merchant_repository = merchant_repo
     @invoice_repository = invoice_repo
-    @transaction_repository = transaction_repo
     @invoice_item_repository = invoice_item_repo
+    @transaction_repository = transaction_repo
     @customer_repository = customer_repo
   end
 
@@ -170,6 +170,7 @@ class SalesAnalyst
 
   def top_revenue_earners(number = 20)
     merchant_ids
+    binding.pry
     merchant_invoice_hash
     invoice_item_hash
     invoice_item_totals
@@ -179,11 +180,12 @@ class SalesAnalyst
   end
 
   def merchant_invoice_hash
-    @merchant_invoices = {}
+    @merchant_invoices = Hash.new {|hash, key| hash[key] = []}
     @merch_ids.each do |merch|
       @merchant_invoices[merch] = @invoice_repository.all.find_all {|invoice| invoice.merchant_id == merch }
     end
     @merchant_invoices
+    binding.pry
   end
 
   def invoice_item_hash
